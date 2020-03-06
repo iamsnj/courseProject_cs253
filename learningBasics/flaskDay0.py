@@ -44,7 +44,7 @@ app = Flask(__name__)
 @app.route('/result')
 def result():
     dict = {'chm' : 'A', 'mth' : 'B', 'phy' : 'C'}
-    return render_template('index.html', result = dict)
+    return render_template('indexDay0.html', result = dict)
 
 
 if __name__ == '__main__':
