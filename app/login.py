@@ -82,7 +82,6 @@ def signIn():
             check = user.query.filter_by(name=userId, passwd=password).first()
             if check is not None:
                 session['username'] = userId
-                # if userId == 'admin':
                 return render_template('loggedIn.html', user=userId)
             else:
                 flash('Invalid Credentials!')
