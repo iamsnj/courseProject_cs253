@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sign In</title>
+</head>
+
+<body>
+
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li> {{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
+
+    <h2 style="text-align: center;">Sign In</h2>
+
+    <form action="/login/" , method="POST">
+        <fieldset align='center'>
+            <!-- <legend>Sign In</legend> -->
+            {{ form.hidden_tag }}
+            <div align='center'>
+                <br> {{ form.userId.label }} <br> {{ form.userId }} <br>
+                <br> {{ form.password.label }} <br> {{ form.password }} <br>
+                <br> {{ form.submit }}
+            </div>
+        </fieldset>
+    </form>
+    <p>Click <a href="/register/">here</a> to register.</p>
+</body>
+
+</html>
