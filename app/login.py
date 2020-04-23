@@ -131,7 +131,7 @@ def upload_csv():
             db.session.add(user)
             db.session.commit()
         return render_template('admin.html', user=session["username"])
-    return render_template('upload.html')
+    return render_template('upload.html', user=session["username"])
 
 if __name__ == '__main__':
     db.create_all()
