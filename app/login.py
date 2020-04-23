@@ -10,7 +10,8 @@ Created on Fri Apr 10 22:20:36 2020
 from flask import Flask, request, flash, render_template, session, redirect, url_for
 from forms import Register, Sign_In
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.utils import secure_filename
+from io import TextIOWrapper
+import csv
 
 app = Flask(__name__)
 
@@ -27,7 +28,7 @@ class Users(db.Model):
     email = db.Column(db.String(40))
     password = db.Column(db.String(20))
     
-class Ta_email(db.Model):
+class ta_email(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(40))
 
@@ -87,7 +88,7 @@ def signIn():
             whichUser = request.form['whichUser']
             if whichUser == 'A':
                 user = admin(name=userId, password=password)
-            elif whichUser == 'B':
+            elif whichUser == 'T':
                 user = Users(name=userId, password=password)
             else:
                 flash('Invalid Credentials!')
@@ -111,7 +112,26 @@ def logOut():
 @app.route('/user')
 def login_users():
     userId = session['username']
-    return render_template(userId +'.html', user=session["username"])
+    if userId == 'admin' or userId == 'manager':
+        return render_template(userId +'.html', user=session["username"])
+    return session['username']
+
+@app.route('/ta-details')
+def ta_details():
+    return render_template('ta-details.html', user=session['username'])
+
+@app.route('/upload-ta', methods=['GET', 'POST'])
+def upload_csv():
+    if request.method == 'POST':
+        csv_file = request.files['file']
+        csv_file = TextIOWrapper(csv_file, encoding='utf-8')
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        for row in csv_reader:
+            user = ta_email(email=row[1])
+            db.session.add(user)
+            db.session.commit()
+        return render_template('admin.html', user=session["username"])
+    return render_template('upload.html')
 
 if __name__ == '__main__':
     db.create_all()
