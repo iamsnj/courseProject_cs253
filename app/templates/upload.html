@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>File Upload</title>
-</head>
-
-<body>
+{% extends 'admin.html' %}
+{% block content %}
+<div align='center'>
     <form action="/upload-ta" method="POST" enctype="multipart/form-data">
         <input type="file" name="file">
         <input type="submit">
     </form>
-</body>
-
-</html>
+</div>
+{% endblock %}
