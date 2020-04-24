@@ -1,2 +1,49 @@
-<p>Welcome {{ user }}</p>
-<a href="/logout">Logout</a>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{user.title()}} | IIT Kanpur</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='admin.css')}}">
+    <link rel="icon" href="{{url_for('static', filename='IITK_Logo.jpeg')}}" type="image/x-icon">
+</head>
+
+<body>
+
+    <body>
+
+        <div class="header">
+            <h1>Department of EE , IITK</h1>
+            <h3>You are Logged in as <i>{{ user }}</i></h3>
+            <img src="{{url_for('static', filename='IITK_Logo.jpeg')}}" id='img_logo'>
+        </div>
+
+        <div class="navbar">
+            <div class="dropdown">
+                <button class="dropbtn"><i class="material-icons">reorder&nbsp;</i>Menu</button>
+                <div class="dropdown-content">
+                    <a href="#">TA Details</a>
+                    <a href="#">Students Details</a>
+                </div>
+            </div>
+            <a href="/user"><i class="material-icons">home</i>Home</a>
+            <div class="dropdown" id='flt'>
+                <button class="dropbtn">{{user.title()}}&nbsp;<i class='material-icons'>account_circle</i></button>
+                <div class="dropdown-content">
+                    <a href="/change-password">Change Password</a>
+                    <a href="/logout">Logout</a>
+                </div>
+            </div>
+            <div class="dropdown" id="flt">
+                <button class="dropbtn">View As<i class="material-icons">keyboard_arrow_down&nbsp;</i></button>
+                <div class="dropdown-content">
+                    <a href="#">TA</a>
+                </div>
+            </div>
+        </div>
+        <p style="padding: 5px;"></p>
+        {% block content %}{% endblock %}
+    </body>
+
+</html>
