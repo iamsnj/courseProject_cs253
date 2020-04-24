@@ -4,6 +4,16 @@
 <head>
     <title>Sign UP</title>
     <!-- <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script> -->
+
+    <style>
+        ul {
+            background: rgb(243, 95, 95);
+            padding: 10px;
+            list-style-type: none;
+            padding-left: 200px;
+            color: rgb(94, 10, 17);
+        }
+    </style>
 </head>
 
 <body>
@@ -11,8 +21,18 @@
     {% with messages = get_flashed_messages() %} {% if messages %}
     <ul>
         {% for message in messages %}
-        <li> {{ message }}</li>
-        {% endfor %}
+        <li> <b>{{ message }}</b></li>
+        {% if message == 'Registered succesfully' %}
+        <style>
+            ul {
+                background: rgb(95, 243, 127);
+                padding: 10px;
+                list-style-type: none;
+                padding-left: 200px;
+                color: rgb(7, 107, 20);
+            }
+        </style>
+        {% endif %} {% endfor %}
     </ul>
     {% endif %} {% endwith %}
 
