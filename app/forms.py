@@ -24,7 +24,6 @@ class Sign_In(Form):
     submit = SubmitField('Submit')
 
 class change_password(Form):
-    password = PasswordField('Password', [validators.DataRequired()])
-    confirm = PasswordField('Confirm Your Password', [
-        validators.DataRequired(),
-        validators.EqualTo('password', message='Passwords must match.')])
+    password = PasswordField('New Password', [validators.DataRequired()])
+    confirm = PasswordField('Confirm Your Password', [validators.DataRequired()])
+    submit = SubmitField('Submit')
