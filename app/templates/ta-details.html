@@ -1,5 +1,13 @@
-{% extends 'admin.html' %} {% block content %}
+{% extends 'admin.html' %} {% block content %} {% with messages = get_flashed_messages() %} {% if messages %}
+<ul>
+    {% for message in messages %}
+    <li> {{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %} {% endwith %}
+
 <div align='center'>
-    <a href="/upload-ta"><button>Add Ta</button></a>
-    <p>hello</p>
+    <a href="/upload-ta"><button>Add TA</button></a>
+    <a href="#"><button>see TA emails</button></a>
+    <a href="/remove-ta"><button>Remove TA</button></a>
 </div>{% endblock %}
