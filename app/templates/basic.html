@@ -1,7 +1,24 @@
 <!DOCTYPE html>
 <html>
-
+<head>
+</head>
+    <style>
+        ul#list {
+            background: rgb(243, 95, 95);
+            padding: 10px;
+            list-style-type: none;
+            padding-left: 200px;
+            color: rgb(94, 10, 17);
+        }
+    </style>
 <body>
+{% with messages = get_flashed_messages() %} {% if messages %}
+    <ul id='list'>
+        {% for message in messages %}
+        <li> <b>{{ message }}</b></li>
+        {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
     <div align='center'>
         <h2>Hello World</h2>
         <h4>Click <a href="http://localhost:5000/register/">here</a> to register.</h4> <br>
