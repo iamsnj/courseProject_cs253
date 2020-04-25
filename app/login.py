@@ -144,7 +144,7 @@ def upload_csv():
             db.session.commit()
         flash('file uploaded succesfully')
         return render_template('ta-details.html', user=session['username'])
-    return render_template('upload.html', user=session["username"])
+    return render_template('ta-details.html', user=session["username"])
 
 @app.route('/change-password', methods = ['GET', 'POST'])
 def changePassword():
