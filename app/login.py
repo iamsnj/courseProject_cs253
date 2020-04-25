@@ -111,17 +111,25 @@ def signIn():
 @app.route('/logout/')
 def logOut():
     session.pop('username', None)
+    session.pop('password', None)
+    session['username'] = None
     return redirect(url_for('basic'))
 
 @app.route('/user')
 def login_users():
+    if session['username'] == None:
+        flash('You are logged out!')
+        return render_template('basic.html')
     userId = session['username']
     if userId == 'admin' or userId == 'manager':
-        return render_template(userId +'.html', user=session["username"])
+        return render_template('admin.html', user=session["username"])
     return session['username']
 
 @app.route('/ta-details')
 def ta_details():
+    if session['username'] == None:
+        flash('You are logged out!')
+        return render_template('basic.html')
     return render_template('ta-details.html', user=session['username'])
 
 @app.route('/upload-ta', methods=['GET', 'POST'])
@@ -140,6 +148,9 @@ def upload_csv():
 
 @app.route('/change-password', methods = ['GET', 'POST'])
 def changePassword():
+    if session['username'] == None:
+        flash('You are logged out!')
+        return render_template('basic.html')
     form = change_password()
     if request.method == 'POST':
         if form.validate == True:
@@ -148,11 +159,11 @@ def changePassword():
             old_password = session['password']
             new_password = request.form['password']
             confirm = request.form['confirm']
+            if new_password != confirm:
+                flash('Password Mismatch')
+                return render_template('change_password.html', form=form, user=session['username'])
             if old_password == new_password:
                 flash('Please enter a new password')
-                return render_template('change_password.html', form=form, user=session['username'])
-            elif new_password != confirm:
-                flash('Password Mismatch')
                 return render_template('change_password.html', form=form, user=session['username'])
             else:
                 session['password'] = new_password
@@ -167,7 +178,7 @@ def changePassword():
                 return render_template('change_password.html', user=session['username'], form=form)
     elif request.method == 'GET':
         return render_template('change_password.html', form=form, user=session['username'])
-            
+    
 
 @app.route('/remove-ta')
 def remove_ta():
