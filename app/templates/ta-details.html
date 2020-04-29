@@ -6,8 +6,27 @@
 </ul>
 {% endif %} {% endwith %}
 
+<script>
+    $(document).ready(function() {
+        $('#bt1').click(function() {
+            $('#div1').show();
+            $('#div2').hide();
+        });
+    });
+</script>
+
+<div align='center' id='div1' style="display:none">
+    <form action="/upload-ta" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit">
+    </form>
+</div>
 <div align='center'>
-    <a href="/upload-ta"><button>Add TA</button></a>
+
+</div>
+<br>
+<div align='center' id='div2'>
+    <button id='bt1'>Add TA</button><br><br>
     <a href="#"><button>see TA emails</button></a>
     <a href="/remove-ta"><button>Remove TA</button></a>
 </div>{% endblock %}
