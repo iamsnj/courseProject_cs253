@@ -1,0 +1,29 @@
+body {
+    margin: 0px;
+}
+
+ul {
+    padding: 10px;
+    list-style-type: none;
+    padding-left: 200px;
+}
+
+.signup {
+    position: absolute;
+    top: 50%;
+    right: 21%;
+    transform: translate(-50%, -50%);
+    width: 25rem;
+    padding: 40px;
+    padding-left: 50px;
+    box-sizing: border-box;
+    background: rgb(143, 189, 146);
+    border-radius: 32px;
+}
+
+#href {
+    text-decoration: none;
+    font-size: large;
+    color: rgb(20, 8, 180);
+    font-weight: bold;
+}
