@@ -3,17 +3,7 @@
 
 <head>
     <title>Sign UP</title>
-    <!-- <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script> -->
-
-    <style>
-        ul {
-            background: rgb(243, 95, 95);
-            padding: 10px;
-            list-style-type: none;
-            padding-left: 200px;
-            color: rgb(94, 10, 17);
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='signup.css')}}">
 </head>
 
 <body>
@@ -22,37 +12,38 @@
     <ul>
         {% for message in messages %}
         <li> <b>{{ message }}</b></li>
-        {% if message == 'Registered succesfully' %}
+        {% if flag == 1 %}
         <style>
             ul {
-                background: rgb(95, 243, 127);
-                padding: 10px;
-                list-style-type: none;
-                padding-left: 200px;
-                color: rgb(7, 107, 20);
+                background: rgb(86, 238, 86);
+                color: rgb(29, 87, 21);
+            }
+        </style>
+        {% else %}
+        <style>
+            ul {
+                background: rgb(241, 89, 89);
+                color: rgb(163, 10, 10);
+                font-size: larger;
             }
         </style>
         {% endif %} {% endfor %}
     </ul>
     {% endif %} {% endwith %}
 
-    <h2 style="text-align: center; margin-left:150px">Sign Up</h2>
 
+    <h2 style="text-align: center;">Sign Up</h2>
     <form action='/register/' , method='POST'>
-        <fieldset>
-            <legend> Sign Up </legend>
-            {{ form.hidden_tag }}
-
-            <div style='margin-left:150px'>
-                {{ form.username.label }} <br> {{ form.username }} <br>
-                <br> {{ form.email.label }} <br> {{ form.email }} <br>
-                <br> {{ form.password.label }} <br> {{ form.password }} <br>
-                <br> {{ form.submit }}
-            </div>
-
-        </fieldset>
+        {{ form.hidden_tag }}
+        <div class="signup">
+            {{ form.username.label }} <br> {{ form.username }} <br>
+            <br> {{ form.email.label }} <br> {{ form.email }} <br>
+            <br> {{ form.password.label }} <br> {{ form.password }} <br>
+            <br> {{ form.submit }}<br>
+            <p>Click <a href="/login/" id='href'>here</a> to login.</p>
+        </div>
     </form>
-    <p>Click <a href="/login/">here</a> to login.</p>
+
 </body>
 
 </html>

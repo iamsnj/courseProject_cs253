@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 </head>
-    <style>
-        ul#list {
-            background: rgb(243, 95, 95);
-            padding: 10px;
-            list-style-type: none;
-            padding-left: 200px;
-            color: rgb(94, 10, 17);
-        }
-    </style>
+<style>
+    ul#list {
+        background: rgb(243, 95, 95);
+        padding: 12px;
+        list-style-type: none;
+        padding-left: 200px;
+        color: rgb(94, 10, 17);
+    }
+    
+    body {
+        margin: 0px;
+    }
+</style>
+
 <body>
-{% with messages = get_flashed_messages() %} {% if messages %}
+    {% with messages = get_flashed_messages() %} {% if messages %}
     <ul id='list'>
         {% for message in messages %}
         <li> <b>{{ message }}</b></li>

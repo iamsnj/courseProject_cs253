@@ -3,21 +3,7 @@
 
 <head>
     <title>Sign In</title>
-    <script type="text/javascript">
-        function handleSelect(elm) {
-            window.location = elm.value;
-        }
-    </script>
-
-    <style>
-        ul#list {
-            background: rgb(243, 95, 95);
-            padding: 10px;
-            list-style-type: none;
-            padding-left: 200px;
-            color: rgb(94, 10, 17);
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='sign-in.css')}}">
 </head>
 
 <body>
@@ -33,17 +19,16 @@
     <h2 style="text-align: center;">Sign In</h2>
 
     <form action="/login/" , method="POST">
-        <fieldset align='center'>
-            {{ form.hidden_tag }}
-            <div align='center'>
-                <br> {{ form.whichUser.label }} <br> {{ form.whichUser }}
-                <br> {{ form.userId.label }} <br> {{ form.userId }} <br>
-                <br> {{ form.password.label }} <br> {{ form.password }} <br>
-                <br> {{ form.submit }}
-            </div>
-        </fieldset>
+        {{ form.hidden_tag }}
+        <div align='center' class="login">
+            <br> {{ form.whichUser.label }} <br> {{ form.whichUser(style="list-style:none; display:inline") }}
+            <br> {{ form.userId.label }} <br> {{ form.userId }} <br>
+            <br> {{ form.password.label }} <br> {{ form.password }} <br>
+            <br> {{ form.submit }}<br>
+            <p>Click <a href="/register/" id="href">here</a> to register.</p>
+        </div>
     </form>
-    <p>Click <a href="/register/">here</a> to register.</p>
+
 </body>
 
 </html>
