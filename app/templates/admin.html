@@ -7,6 +7,27 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='admin.css')}}">
     <link rel="icon" href="{{url_for('static', filename='IITK_Logo.jpeg')}}" type="image/x-icon">
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+    <script>
+        $(document).ready(function() {
+            $('#ta-det').click(function() {
+                $('#p2').show();
+            });
+
+            $('#bt1').click(function() {
+                $('#div1').show();
+                $('#p2').hide();
+            });
+        });
+    </script>
+
+    <style>
+        ul#flash {
+            padding: 10px;
+            list-style-type: none;
+            padding-left: 200px;
+        }
+    </style>
 </head>
 
 <body>
@@ -23,8 +44,7 @@
             <div class="dropdown">
                 <button class="dropbtn"><i class="material-icons">reorder&nbsp;</i>Menu</button>
                 <div class="dropdown-content">
-                    <!--<a href="#">Manager Details</a>-->
-                    <a href="/ta-details">TA Details</a>
+                    <a href="#" id='ta-det'>TA Details</a>
                     <a href="#">Students Details</a>
                 </div>
             </div>
@@ -32,21 +52,55 @@
             <div class="dropdown" id='flt'>
                 <button class="dropbtn">{{user.title()}}&nbsp;<i class='material-icons'>account_circle</i></button>
                 <div class="dropdown-content">
-                    <a href="#">Change Password</a>
+                    <a href="/change-password">Change Password</a>
                     <a href="/logout">Logout</a>
                 </div>
             </div>
             <div class="dropdown" id="flt">
                 <button class="dropbtn">View As<i class="material-icons">keyboard_arrow_down&nbsp;</i></button>
                 <div class="dropdown-content">
-                    <a href="#">Manager</a>
+                    {% if user == 'admin' %}
+                    <a href="#">Manager</a> {% endif %}
                     <a href="#">TA</a>
                 </div>
             </div>
         </div>
-
-        <!-- <iframe name="iFrame" width="100%" height="480"></iframe> -->
         <p style="padding: 5px;"></p>
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <ul id="flash">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% if flag == 1 %}
+            <style>
+                ul {
+                    background: rgb(86, 238, 86);
+                    color: rgb(29, 87, 21);
+                }
+            </style>
+            {% else %}
+            <style>
+                ul {
+                    background: rgb(238, 86, 86);
+                    color: rgb(131, 5, 5);
+                }
+            </style>
+            {% endif %} {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+
+        <div align='center' id='div1' style="display:none">
+            <form action="/upload-ta" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file">
+                <input type="submit">
+            </form>
+        </div>
+
+        <div align='center' id='p2' style="display: none;">
+            <button id='bt1'>Add TA</button><br><br>
+            <a href="#"><button>see TA emails</button></a>
+            <a href="#"><button>Remove TA</button></a>
+        </div>
+
         {% block content %}{% endblock %}
     </body>
 

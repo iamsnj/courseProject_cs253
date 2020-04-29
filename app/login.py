@@ -57,7 +57,7 @@ def signUp():
                 email_exists = ta_email.query.filter_by(email=email).first()
                 if email_exists is None:
                     flash('You are not authorised to signup ):')
-                    return render_template('signup.html', form=form)
+                    return render_template('signup.html', form=form, flag=0)
                 else:
                     user = Users(name=usrnm, email=email, password=password)
     
@@ -66,15 +66,15 @@ def signUp():
                     
                     if check_usrnm is not None:
                         flash('Username already exists!')
-                        return render_template('signup.html', form=form)
+                        return render_template('signup.html', form=form, flag=0)
                     elif check_email is not None:
                         flash('Email already registered!')
-                        return render_template('signup.html', form=form)
+                        return render_template('signup.html', form=form, flag=0)
                     else:
                         db.session.add(user)
                         db.session.commit()
-                        flash('Registered succesfully')
-                        return render_template('signup.html', form=form)
+                        flash('Registered succesfully!')
+                        return render_template('signup.html', form=form, flag=1)
     elif request.method == 'GET':
         return render_template('signup.html', form=form)
     
@@ -122,15 +122,8 @@ def login_users():
         return render_template('basic.html')
     userId = session['username']
     if userId == 'admin' or userId == 'manager':
-        return render_template('admin.html', user=session["username"])
+        return render_template('admin.html', user=session["username"], flag=1)
     return session['username']
-
-@app.route('/ta-details')
-def ta_details():
-    if session['username'] == None:
-        flash('You are logged out!')
-        return render_template('basic.html')
-    return render_template('ta-details.html', user=session['username'])
 
 @app.route('/upload-ta', methods=['GET', 'POST'])
 def upload_csv():
@@ -143,7 +136,7 @@ def upload_csv():
             db.session.add(user)
             db.session.commit()
         flash('file uploaded succesfully')
-        return render_template('ta-details.html', user=session['username'])
+        return render_template('admin.html', user=session['username'], flag=1)
     return render_template('ta-details.html', user=session["username"])
 
 @app.route('/change-password', methods = ['GET', 'POST'])
@@ -154,17 +147,17 @@ def changePassword():
     form = change_password()
     if request.method == 'POST':
         if form.validate == True:
-            flash('Please enter a password')
+            flash('Please enter all fields')
         else:
             old_password = session['password']
             new_password = request.form['password']
             confirm = request.form['confirm']
             if new_password != confirm:
                 flash('Password Mismatch')
-                return render_template('change_password.html', form=form, user=session['username'])
+                return render_template('change_password.html', form=form, user=session['username'], flag=0)
             if old_password == new_password:
                 flash('Please enter a new password')
-                return render_template('change_password.html', form=form, user=session['username'])
+                return render_template('change_password.html', form=form, user=session['username'], flag=0)
             else:
                 session['password'] = new_password
                 if session['username'] == 'admin' or session['username'] == 'manager':
@@ -175,14 +168,9 @@ def changePassword():
                     user.password = new_password
                 db.session.commit()
                 flash('Password changed succesfully!')
-                return render_template('change_password.html', user=session['username'], form=form)
+                return render_template('change_password.html', user=session['username'], form=form, flag=1)
     elif request.method == 'GET':
         return render_template('change_password.html', form=form, user=session['username'])
-    
-
-@app.route('/remove-ta')
-def remove_ta():
-    return render_template('ta-details.html', user=session['username'])
 
 if __name__ == '__main__':
     db.create_all()
