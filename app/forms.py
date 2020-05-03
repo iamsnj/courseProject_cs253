@@ -21,7 +21,7 @@ class Sign_In(Form):
     whichUser = RadioField('Login As', choices = [('A','Admin'),('T','TA')], default='A')  
     userId = StringField('UserId', [validators.DataRequired()])
     password = PasswordField('Password', [validators.DataRequired()])
-    submit = SubmitField('Submit')
+    submit = SubmitField('Log In')
 
 class change_password(Form):
     password = PasswordField('New Password', [validators.DataRequired()])
