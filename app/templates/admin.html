@@ -97,11 +97,20 @@
 
         <div align='center' id='p2' style="display: none;">
             <button id='bt1'>Add TA</button><br><br>
-            <a href="#"><button>see TA emails</button></a>
+            <a href="/see-emails"><button>see TA emails</button></a>
             <a href="#"><button>Remove TA</button></a>
         </div>
 
-        {% block content %}{% endblock %}
+        {% if show_table == 1 %}
+        <table border="1px" align="center" cellpadding='7px'>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id}}</td>
+                <td>{{ user.email }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %} {% block content %}{% endblock %}
     </body>
 
 </html>
