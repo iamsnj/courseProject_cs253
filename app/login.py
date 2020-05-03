@@ -8,6 +8,7 @@ Created on Fri Apr 10 22:20:36 2020
 
 
 from flask import Flask, request, flash, render_template, session, redirect, url_for
+from werkzeug.security import generate_password_hash, check_password_hash
 from forms import Register, Sign_In, change_password
 from flask_sqlalchemy import SQLAlchemy
 from io import TextIOWrapper
@@ -26,7 +27,7 @@ class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20))
     email = db.Column(db.String(40))
-    password = db.Column(db.String(20))
+    password = db.Column(db.String)
     
 class ta_email(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -36,7 +37,7 @@ class admin(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20))
     email = db.Column(db.String(40))
-    password = db.Column(db.String(20))
+    password = db.Column(db.String)
 
 @app.route('/')
 def basic():
@@ -54,13 +55,13 @@ def signUp():
                 usrnm = request.form['username']
                 email = request.form['email']
                 password = request.form['password']
+                password = generate_password_hash(password)
                 email_exists = ta_email.query.filter_by(email=email).first()
                 if email_exists is None:
                     flash('You are not authorised to signup ):')
                     return render_template('signup.html', form=form, flag=0)
                 else:
                     user = Users(name=usrnm, email=email, password=password)
-    
                     check_usrnm = user.query.filter_by(name=usrnm).first()
                     check_email = user.query.filter_by(email=email).first()
                     
@@ -91,14 +92,16 @@ def signIn():
             password = request.form['password']
             whichUser = request.form['whichUser']
             if whichUser == 'A':
-                user = admin(name=userId, password=password)
+                user = admin.query.filter_by(name = userId).first()
             elif whichUser == 'T':
-                user = Users(name=userId, password=password)
+                user = Users.query.filter_by(name = userId).first()
             else:
                 flash('Invalid Credentials!')
                 return render_template('sign_in.html', form=form)
-            check = user.query.filter_by(name=userId, password=password).first()
-            if check is not None:
+            val1 = (userId == 'admin' and password == 'admin@iitk')
+            val2 = (userId == 'manager' and password == 'manager@iitk')
+            val = val1 or val2
+            if val or (user and check_password_hash(user.password, password)):
                 session['username'] = userId
                 session['password'] = password
                 return redirect(url_for('login_users'))
@@ -123,7 +126,7 @@ def login_users():
     userId = session['username']
     if userId == 'admin' or userId == 'manager':
         return render_template('admin.html', user=session["username"], flag=1)
-    return session['username']
+    return render_template('ta.html', user=session['username'])
 
 @app.route('/upload-ta', methods=['GET', 'POST'])
 def upload_csv():
@@ -149,28 +152,33 @@ def changePassword():
         if form.validate == True:
             flash('Please enter all fields')
         else:
-            old_password = session['password']
+            username = session['username']
+            if username == 'admin' or username == 'manager':
+                user = admin.query.filter_by(name = username).first()
+            else:
+                user = Users.query.filter_by(name = username).first()
+
             new_password = request.form['password']
             confirm = request.form['confirm']
+
             if new_password != confirm:
                 flash('Password Mismatch')
-                return render_template('change_password.html', form=form, user=session['username'], flag=0)
-            if old_password == new_password:
+                return render_template('change_password.html', form=form, user=username, flag=0)
+            elif check_password_hash(user.password, new_password):
                 flash('Please enter a new password')
-                return render_template('change_password.html', form=form, user=session['username'], flag=0)
+                return render_template('change_password.html', form=form, user=username, flag=0)
             else:
                 session['password'] = new_password
-                if session['username'] == 'admin' or session['username'] == 'manager':
-                    user = admin.query.filter_by(name=session['username']).first()
-                    user.password = new_password
-                else:
-                    user = Users.query.filter_by(name=session['username']).first()
-                    user.password = new_password
+                user.password = generate_password_hash(new_password)
                 db.session.commit()
                 flash('Password changed succesfully!')
                 return render_template('change_password.html', user=session['username'], form=form, flag=1)
     elif request.method == 'GET':
         return render_template('change_password.html', form=form, user=session['username'])
+
+@app.route('/see-emails')
+def see_emails():
+    return render_template('admin.html', user=session['username'], users=ta_email.query.all(), show_table=1)
 
 if __name__ == '__main__':
     db.create_all()
