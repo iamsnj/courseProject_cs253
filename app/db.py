@@ -31,9 +31,10 @@ class mt_students(db.Model):
     email = db.Column(db.String(40))
     phone = db.Column(db.String(20))
     dob = db.Column(db.String(10))
-    score = db.Column(db.Integer(8))
-    gate = db.Column(db.Integer(8))
+    score = db.Column(db.Integer)
+    gate = db.Column(db.Integer)
     disc = db.Column(db.String)
+    comments = db.Column(db.String, nullable=True)
     
 class phd_students(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,6 +43,7 @@ class phd_students(db.Model):
     email = db.Column(db.String(40))
     phone = db.Column(db.String(20))
     dob = db.Column(db.String(10))
-    score = db.Column(db.Integer(8))
-    gate = db.Column(db.Integer(8))
+    score = db.Column(db.Integer)
+    gate = db.Column(db.Integer)
     disc = db.Column(db.String)
+    comments = db.Column(db.String, nullable=True)
