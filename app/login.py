@@ -6,7 +6,6 @@ Created on Fri Apr 10 22:20:36 2020
 @author: sanjay
 """
 
-
 from flask import Flask, request, flash, render_template, session, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import Register, Sign_In, change_password
@@ -17,27 +16,10 @@ import csv
 app = Flask(__name__)   
 
 app.secret_key = 'development key'
-
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///project.sqlite3'
 
 db = SQLAlchemy(app)
-
-class Users(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20))
-    email = db.Column(db.String(40))
-    password = db.Column(db.String)
-    
-class ta_email(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(40))
-
-class admin(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20))
-    email = db.Column(db.String(40))
-    password = db.Column(db.String)
 
 @app.route('/')
 def basic():
@@ -125,11 +107,14 @@ def login_users():
         return render_template('basic.html')
     userId = session['username']
     if userId == 'admin' or userId == 'manager':
-        return render_template('admin.html', user=session["username"], flag=1)
+        return render_template(userId +'.html', user=session["username"], flag=1)
     return render_template('ta.html', user=session['username'])
 
 @app.route('/upload-ta', methods=['GET', 'POST'])
 def upload_csv():
+    if session['username'] == None:
+        flash('You are logged out!')
+        return render_template('basic.html')
     if request.method == 'POST':
         csv_file = request.files['file']
         csv_file = TextIOWrapper(csv_file, encoding='utf-8')
@@ -178,8 +163,12 @@ def changePassword():
 
 @app.route('/see-emails')
 def see_emails():
+    if session['username'] == None:
+        flash('You are logged out!')
+        return render_template('basic.html')
     return render_template('admin.html', user=session['username'], users=ta_email.query.all(), show_table=1)
 
 if __name__ == '__main__':
+    from db import Users, admin, ta_email
     db.create_all()
     app.run(debug=True)
