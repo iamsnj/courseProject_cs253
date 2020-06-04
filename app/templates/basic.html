@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
-
 <head>
+    <title>IITK</title>
+    <style>
+        ul#list {
+            background: rgb(243, 95, 95);
+            padding: 12px;
+            list-style-type: none;
+            padding-left: 200px;
+            color: rgb(94, 10, 17);
+        }
+
+        body {
+            margin: 0px;
+        }
+    </style>
 </head>
-<style>
-    ul#list {
-        background: rgb(243, 95, 95);
-        padding: 12px;
-        list-style-type: none;
-        padding-left: 200px;
-        color: rgb(94, 10, 17);
-    }
-    
-    body {
-        margin: 0px;
-    }
-</style>
 
 <body>
     {% with messages = get_flashed_messages() %} {% if messages %}
