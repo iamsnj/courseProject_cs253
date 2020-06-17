@@ -1,0 +1,19 @@
+{
+  "name": "tawork",
+  "version": "1.0.0",
+  "description": "flask app ",
+  "main": "app/login.py",
+  "scripts": {
+  "start": "python login.py"
+},
+  "repository": {
+  "type": "git",
+  "url": "git+https://github.com/iamsnj/courseProject_cs253.git"
+},
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+  "url": "https://github.com/iamsnj/courseProject_cs253/issues"
+},
+  "homepage": "https://github.com/iamsnj/courseProject_cs253#readme"
+}
