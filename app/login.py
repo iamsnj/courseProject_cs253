@@ -48,7 +48,7 @@ def signUp():
                     user = Users(name=usrnm, email=email, password=password)
                     check_usrnm = user.query.filter_by(name=usrnm).first()
                     check_email = user.query.filter_by(email=email).first()
-                    
+
                     if check_usrnm is not None:
                         flash('Username already exists!')
                         return render_template('signup.html', form=form, flag=0)
