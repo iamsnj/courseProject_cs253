@@ -7,12 +7,13 @@ Created on Fri Apr 10 22:22:08 2020
 """
 
 from wtforms import Form, StringField, PasswordField, SubmitField, RadioField
-from wtforms.fields.html5 import EmailField
+# from wtforms.fields.html5 import EmailField
+import email_validator
 from wtforms import validators
 
 class Register(Form):
     username = StringField('Username', [validators.DataRequired()])
-    email = EmailField('Email', [validators.DataRequired(), validators.Email()])
+    email = StringField('Email', [validators.DataRequired(), validators.Email()])
     password = PasswordField('Password', [validators.DataRequired()])
     submit = SubmitField('Sign Up')
 
