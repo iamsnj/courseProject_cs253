@@ -21,6 +21,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///project.sqlite3'
 
 db = SQLAlchemy(app)
 
+from models import Users, ta_email, admin
+
 @app.route('/')
 def basic():
     return render_template('basic.html')
