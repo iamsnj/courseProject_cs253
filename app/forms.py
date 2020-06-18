@@ -13,7 +13,7 @@ from wtforms import validators
 
 class Register(Form):
     username = StringField('Username', [validators.DataRequired()])
-    email = StringField('Email', [validators.DataRequired(), validators.Email()])
+    email = StringField('Email', [validators.DataRequired(), email_validator.Email()])
     password = PasswordField('Password', [validators.DataRequired()])
     submit = SubmitField('Sign Up')
 
