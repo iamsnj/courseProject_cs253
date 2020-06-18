@@ -41,25 +41,25 @@ def signUp():
                 password = request.form['password']
                 password = generate_password_hash(password)
                 email_exists = ta_email.query.filter_by(email=email).first()
-                if email_exists is None:
-                    flash('You are not authorised to signup ):')
+#                 if email_exists is None:
+#                     flash('You are not authorised to signup ):')
+#                     return render_template('signup.html', form=form, flag=0)
+#                 else:
+                user = Users(name=usrnm, email=email, password=password)
+                check_usrnm = user.query.filter_by(name=usrnm).first()
+                check_email = user.query.filter_by(email=email).first()
+
+                if check_usrnm is not None:
+                    flash('Username already exists!')
+                    return render_template('signup.html', form=form, flag=0)
+                elif check_email is not None:
+                    flash('Email already registered!')
                     return render_template('signup.html', form=form, flag=0)
                 else:
-                    user = Users(name=usrnm, email=email, password=password)
-                    check_usrnm = user.query.filter_by(name=usrnm).first()
-                    check_email = user.query.filter_by(email=email).first()
-                    
-                    if check_usrnm is not None:
-                        flash('Username already exists!')
-                        return render_template('signup.html', form=form, flag=0)
-                    elif check_email is not None:
-                        flash('Email already registered!')
-                        return render_template('signup.html', form=form, flag=0)
-                    else:
-                        db.session.add(user)
-                        db.session.commit()
-                        flash('Registered succesfully!')
-                        return render_template('signup.html', form=form, flag=1)
+                    db.session.add(user)
+                    db.session.commit()
+                    flash('Registered succesfully!')
+                    return render_template('signup.html', form=form, flag=1)
     elif request.method == 'GET':
         return render_template('signup.html', form=form)
     
