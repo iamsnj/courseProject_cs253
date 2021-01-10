@@ -166,6 +166,6 @@ def see_emails():
     return render_template('admin.html', user=session['username'], users=ta_email.query.all(), show_table=1)
 
 if __name__ == '__main__':
-    db.create_all()
     from models import Users, admin, ta_email, db
+    db.create_all()
     app.run(debug=True)
