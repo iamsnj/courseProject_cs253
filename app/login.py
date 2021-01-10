@@ -9,6 +9,7 @@ Created on Fri Apr 10 22:20:36 2020
 from flask import Flask, request, flash, render_template, session, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import Register, Sign_In, change_password
+# from models import Users, admin, ta_email
 from flask_sqlalchemy import SQLAlchemy
 from io import TextIOWrapper
 import csv
@@ -82,10 +83,7 @@ def signIn():
             else:
                 flash('Invalid Credentials!')
                 return render_template('sign_in.html', form=form)
-            val1 = (userId == 'admin' and password == 'admin@iitk')
-            val2 = (userId == 'manager' and password == 'manager@iitk')
-            val = val1 or val2
-            if val or (user and check_password_hash(user.password, password)):
+            if user and check_password_hash(user.password, password):
                 session['username'] = userId
                 session['password'] = password
                 return redirect(url_for('login_users'))
@@ -171,6 +169,6 @@ def see_emails():
     return render_template('admin.html', user=session['username'], users=ta_email.query.all(), show_table=1)
 
 if __name__ == '__main__':
-    from models import Users, admin, ta_email
     db.create_all()
-    app.run(debug=True)
+    from models import Users, admin, ta_email
+    app.run(host='127.0.0.1', debug=True)
