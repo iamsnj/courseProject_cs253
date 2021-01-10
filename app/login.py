@@ -21,7 +21,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///project.sqlite3'
 
 db = SQLAlchemy(app)
 
-from models import Users, ta_email, admin
+# from models import Users, ta_email, admin
 
 @app.route('/')
 def basic():
@@ -171,6 +171,6 @@ def see_emails():
     return render_template('admin.html', user=session['username'], users=ta_email.query.all(), show_table=1)
 
 if __name__ == '__main__':
-    from db import Users, admin, ta_email
+    from models import Users, admin, ta_email
     db.create_all()
     app.run(debug=True)
