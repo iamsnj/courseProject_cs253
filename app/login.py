@@ -9,7 +9,6 @@ Created on Fri Apr 10 22:20:36 2020
 from flask import Flask, request, flash, render_template, session, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import Register, Sign_In, change_password
-# from models import Users, admin, ta_email
 from flask_sqlalchemy import SQLAlchemy
 from io import TextIOWrapper
 import csv
@@ -21,8 +20,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///project.sqlite3'
 
 db = SQLAlchemy(app)
-
-# from models import Users, ta_email, admin
 
 @app.route('/')
 def basic():
